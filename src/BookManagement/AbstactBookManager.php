@@ -6,12 +6,10 @@ interface AbstactBookManager
 
     public function getLibriByNome($nome);
 
-    public function getLibriByAutore($autore);
+    public function inserisciNuovoLibro($nome, $autore);
 
-    public function inserisciNuovoLibro($book);
+    public function modificaLibro($id, $nome, $autore);
 
-    public function modificaLibro($book);
-
-    public function eliminaLibroByNome($nome);
+    public function eliminaLibroById($id);
 
 }
