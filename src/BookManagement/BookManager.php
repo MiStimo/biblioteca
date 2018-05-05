@@ -1,9 +1,10 @@
 <?php
 
-require_once'AbstractBookManager.php';
+require_once 'AbstactBookManager.php';
 
 class BookManager implements AbstactBookManager
 {
+
     public function getTuttiLibri()
     {
         $con = DBController::getConnection();

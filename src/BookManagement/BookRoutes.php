@@ -10,7 +10,7 @@ require_once 'BookManager.php';
 class BookRoutes extends Route
 {
 
-    public static function register_routes(App $app)
+    public static function registerRoutes(App $app)
     {
         $app->get('/libri', self::class . ':getTuttiLibri');
     }
@@ -18,27 +18,33 @@ class BookRoutes extends Route
     public function getTuttiLibri(Request $request, Response $response)
     {
         $result = false;
+        $message = null;
+        $dataKey = "libri";
+        $data = null;
+        $status = null;
 
         $con = DBController::getConnection();
 
         if ($con) {
 
-            $libri = BookManager::getTuttiLibri();
+            $data = BookManager::getTuttiLibri();
 
-            if ($libri) {
+            if ($data) {
                 $result = true;
-                $this->message = "libri esistenti";
-                $response = self::get_response($response, $result, 'libri', $libri);
+                $message = "libri esistenti";
+                $status = 200;
             } else {
-                $this->message = "libri non esistenti";
-                $response = self::get_response($response, $result, 'libri', false);
+                $message = "libri non esistenti";
+                $status = 204;
             }
         } else {
-            $this->message = "database non connesso";
-            $response = self::get_response($response, $result, 'libri', false);
+            $message = "database non connesso";
+            $status = 503;
         }
 
-        return $response;
+        $myResponse = self::getResponse($response, $status, $result, $message, $dataKey, $data);
+
+        return $myResponse;
     }
 
 }

@@ -7,24 +7,21 @@ use Slim\Http\Response;
 
 abstract class Route
 {
-    public $message;
 
-    public static abstract function register_routes(App $app);
+    public static abstract function registerRoutes(App $app);
 
-    public function get_response(Response $response, $result, $data_key, $data = false, array $response_params = [])
+    public function getResponse($response, $status, $result, $message, $dataKey, $data)
     {
-        $json_data = array(
+        $jsonData = array(
             'result' => $result,
-            'message' => $this->message,
-            $data_key => $data
+            'message' => $message,
+            $dataKey => $data
         );
-        if (!empty($response_params)) {
-            $response = $response->withStatus($response_params['status'])
-                ->withHeader('Content-Type', $response_params['content-type']);
-        } else {
-            $response = $response->withStatus(200);
-        }
-        return $response->withJson($json_data);
+
+        $response = $response->withJson($jsonData);
+        $response = $response->withStatus($status);
+
+        return $response;
     }
 
 }
