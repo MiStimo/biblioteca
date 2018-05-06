@@ -2,9 +2,16 @@
 
 require_once 'AbstactBookManager.php';
 
+/**
+ * Class BookManager
+ */
 class BookManager implements AbstactBookManager
 {
-
+    /**
+     * Restituisce una lista di libri se estono altrimenti restituisce un valore false
+     * @author Giuseppe Spallone
+     * @return array|bool
+     */
     public function getTuttiLibri()
     {
         $con = DBController::getConnection();
@@ -34,6 +41,12 @@ class BookManager implements AbstactBookManager
         }
     }
 
+    /**
+     * Dato un id, restituisce un libro se esiste altrimenti restituisce un valore false
+     * @author Giuseppe Spallone
+     * @param integer $id
+     * @return array|bool
+     */
     private function getLibroById($id)
     {
         $con = DBController::getConnection();
@@ -59,6 +72,12 @@ class BookManager implements AbstactBookManager
         }
     }
 
+    /**
+     * Dato un nome, restituisce un libro se esiste altrimenti restituisce un valore false
+     * @author Giuseppe Spallone
+     * @param string $nome
+     * @return array|bool
+     */
     public function getLibriByNome($nome)
     {
         $con = DBController::getConnection();
@@ -88,6 +107,15 @@ class BookManager implements AbstactBookManager
         }
     }
 
+    /**
+     * Dato un nome e un autore, inserisce un nuovo libro e lo restituisce
+     * in output se l'inserimento è andato a buon fine, altrimenti restituisce
+     * un valore false
+     * @author Giuseppe Spallone
+     * @param string $nome
+     * @param string $autore
+     * @return array|bool
+     */
     public function inserisciNuovoLibro($nome, $autore)
     {
         $con = DBController::getConnection();
@@ -108,17 +136,27 @@ class BookManager implements AbstactBookManager
         }
     }
 
-    public function modificaLibro($id, $nome, $autore)
+    /**
+     * Dato un id, un nome e un autore, modifica gli attributi nome e autore del libro
+     * identificato dall'id e lo restituisce in output se la modifica è andata a buon
+     * fine, altrimenti restituisce un valore false
+     * @author Giuseppe Spallone
+     * @param integer $id
+     * @param string $nome
+     * @param string $autore
+     * @return array|bool
+     */
+    public function modificaLibroById($id, $nome, $autore)
     {
         $con = DBController::getConnection();
 
         $libro = self::getLibroById($id);
 
         if ($libro['id']) {
-            $query = "UPDATE libro SET id = ? WHERE nome = ?, autore = ?";
+            $query = "UPDATE libro SET nome = ?, autore = ? WHERE id = ?";
 
             $stmt = $con->prepare($query);
-            $stmt->bind_param("iss", $id, $nome, $autore);
+            $stmt->bind_param("ssi", $nome, $autore, $id);
             $stmt->execute();
             $stmt->store_result();
 
@@ -134,6 +172,14 @@ class BookManager implements AbstactBookManager
 
     }
 
+    /**
+     * Dato un id, elimina il libro e lo restituisce
+     * in output true se l'eliminazione è andato a buon fine, altrimenti restituisce
+     * un valore false
+     * @author Giuseppe Spallone
+     * @param $id
+     * @return bool
+     */
     public function eliminaLibroById($id)
     {
         $con = DBController::getConnection();
@@ -152,6 +198,5 @@ class BookManager implements AbstactBookManager
             return false;
         }
     }
-
 
 }

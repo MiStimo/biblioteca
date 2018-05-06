@@ -8,7 +8,7 @@ interface AbstactBookManager
 
     public function inserisciNuovoLibro($nome, $autore);
 
-    public function modificaLibro($id, $nome, $autore);
+    public function modificaLibroById($id, $nome, $autore);
 
     public function eliminaLibroById($id);
 

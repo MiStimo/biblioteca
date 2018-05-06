@@ -31,7 +31,8 @@ class BookRoutes extends Route
 
         if ($con) {
 
-            $data = BookManager::getTuttiLibri();
+            $bookManager = new BookManager();
+            $data = $bookManager->getTuttiLibri();
 
             if ($data) {
                 $result = true;
@@ -66,7 +67,8 @@ class BookRoutes extends Route
             $nome = $request->getAttribute('nome');
 
             if ($nome) {
-                $data = BookManager::getLibriByNome($nome);
+                $bookManager = new BookManager();
+                $data = $bookManager->getLibriByNome($nome);
 
                 if ($data) {
                     $result = true;
@@ -109,7 +111,8 @@ class BookRoutes extends Route
             if ($nome || $autore) {
                 if ($nome) {
                     if ($autore) {
-                        $data = BookManager::inserisciNuovoLibro($nome, $autore);
+                        $bookManager = new BookManager();
+                        $data = $bookManager->inserisciNuovoLibro($nome, $autore);
 
                         if ($data) {
                             $result = true;
@@ -157,7 +160,8 @@ class BookRoutes extends Route
             $id = $request->getAttribute('id');
 
             if ($id) {
-                $data = BookManager::eliminaLibroById($id);
+                $bookManager = new BookManager();
+                $data = $bookManager->eliminaLibroById($id);
 
                 if ($data) {
                     $result = true;
@@ -193,12 +197,15 @@ class BookRoutes extends Route
         if ($con) {
 
             $id = $request->getAttribute('id');
-            $requestData = $request->getParsedBody();
-            $nome = $requestData['nome'];
-            $autore = $requestData['autore'];
 
             if ($id) {
-                $data = BookManager::modificaLibroById($id, $nome, $autore);
+
+                $parsedBody = $request->getParsedBody();
+                $nome = $parsedBody['nome'];
+                $autore = $parsedBody['autore'];
+
+                $bookManager = new BookManager();
+                $data = $bookManager->modificaLibroById($id, $nome, $autore);
 
                 if ($data) {
                     $result = true;
